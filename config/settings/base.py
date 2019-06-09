@@ -43,7 +43,10 @@ LOCALE_PATHS = [ROOT_DIR.path("locale")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres://localhost/star_wars")
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'star_wars_db',
+    }
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
@@ -75,8 +78,10 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "star_wars.users.apps.UsersConfig",
     # Your stuff: custom apps go here
+    "star_wars.users.apps.UsersConfig",
+    "star_wars.characters.apps.CharactersApp",
+    "star_wars.films.apps.FilmsApp",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
