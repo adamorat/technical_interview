@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model, forms
 from django.core.exceptions import ValidationError
+from django.forms import ModelForm, Form, CharField, PasswordInput
 from django.utils.translation import ugettext_lazy as _
 
-User = get_user_model()
+from star_wars.users.models import User
 
 
 class UserChangeForm(forms.UserChangeForm):
@@ -28,3 +29,11 @@ class UserCreationForm(forms.UserCreationForm):
             return username
 
         raise ValidationError(self.error_messages["duplicate_username"])
+
+
+class UserLoginForm(Form):
+    username = CharField()
+    password = CharField(widget=PasswordInput)
+
+    class Meta:
+        fields = ("username", "password")
