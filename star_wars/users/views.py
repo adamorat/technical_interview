@@ -1,6 +1,10 @@
-from django.contrib.auth import login, authenticate
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
+from django.urls import reverse_lazy, reverse
+from django.views import View
+from django.views.generic import CreateView, FormView
 
 from star_wars.users.forms import UserCreationForm, UserLoginForm
 from star_wars.users.mixins import NoLoginRequiredMixin
@@ -20,7 +24,7 @@ class RegisterUserView(NoLoginRequiredMixin, CreateView):
         return form_valid
 
 
-class LoginUserView(NoLoginRequiredMixin, CreateView):
+class LoginUserView(NoLoginRequiredMixin, FormView):
     form_class = UserLoginForm
     template_name = 'login.html'
     success_url = reverse_lazy('films:index', args=())
@@ -32,3 +36,11 @@ class LoginUserView(NoLoginRequiredMixin, CreateView):
                             password=form.data.get('password'))
         login(self.request, user)
         return form_valid
+
+
+class LogOutView(LoginRequiredMixin, View):
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return HttpResponseRedirect(reverse('users:login', args=()))

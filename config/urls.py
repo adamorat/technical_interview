@@ -6,11 +6,13 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
 
+from star_wars.common.views import MainView
 
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
+    path("", MainView.as_view(), name='main'),
     path("films/", include("star_wars.films.urls", namespace="films")),
 
     path("users/", include("star_wars.users.urls", namespace="users")),
