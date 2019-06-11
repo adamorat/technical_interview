@@ -1,11 +1,18 @@
 import itertools
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView
+from django_filters.views import FilterView
+from rest_framework import mixins
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.serializers import Serializer
+from rest_framework.viewsets import GenericViewSet
 from swapi import swapi
 
 from star_wars.characters.models import Character
 from star_wars.films.forms import SearchFilmForm
+from star_wars.films.models import Film
+from star_wars.films.serializers import FilmSerializer
 
 
 class FilmView(LoginRequiredMixin, TemplateView):
@@ -16,13 +23,23 @@ class FilmView(LoginRequiredMixin, TemplateView):
         return super().get(request, *args, **kwargs)
 
 
-class SearchFilmFormView(LoginRequiredMixin, FormView):
-    form_class = SearchFilmForm
+class SearchFilmFormView(LoginRequiredMixin, ListView):
+    model = Film
+    search_fields = ['title', ]
 
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
 
-    def form_valid(self, form):
-        """TODO: define correct film URL"""
-        self.success_url = ''
-        return super().form_valid(form)
+class FilmApiView(mixins.ListModelMixin, GenericViewSet):
+    queryset = Film.objects.all()
+    serializer_class = FilmSerializer
+    permission_classes = [IsAuthenticated]
+    search_fields = ['title']
+
+
+class FilmDetailView(LoginRequiredMixin, TemplateView):
+    template_name = "film_detail.html"
+    model = Film
+
+    def get(self, request, *args, **kwargs):
+        film_id = kwargs.get('id')
+        kwargs['film'] = self.model.objects.get(id=film_id)
+        return super().get(request, *args, **kwargs)

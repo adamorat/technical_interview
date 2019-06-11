@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 {% load static i18n %}
 
+
+{% block static_block %}
+<link href="{% static 'content/styles.css' %}" rel="stylesheet" />
+{% endblock %}
+
+
 {% block content %}
-
-
 <div class="row">
   <!-- Area Chart -->
   <div class="col-xl-12 col-lg-12">
@@ -45,6 +49,9 @@
     </div>
   </div>
 </div>
+{% endblock %}
 
+
+{% block script_block %}
 
 {% endblock %}

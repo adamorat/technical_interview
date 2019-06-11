@@ -18,6 +18,7 @@
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+  {% block static_block %}{% endblock %}
 
 </head>
 
@@ -75,12 +76,9 @@
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="{% trans 'Buscar peliculas' %}" aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
+              <input type="text" class="form-control bg-light border-0 small"
+                     placeholder="{% trans 'Buscar peliculas' %}" aria-label="Search"
+                     aria-describedby="basic-addon2" name="search" id="autocomplete">
             </div>
           </form>
           <ul class="navbar-nav ml-auto">
@@ -170,9 +168,31 @@
   <!-- Page level plugins -->
   <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+  <!-- jQuery Autocomplete -->
+  <script type="text/javascript" src="{% static 'scripts/jquery-1.8.2.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'scripts/jquery.mockjax.js' %}"></script>
+  <script type="text/javascript" src="{% static 'src/jquery.autocomplete.js' %}"></script>
+  <!-- script type="text/javascript" src="{% static 'scripts/countries.js' %}"></script>
+  <script type="text/javascript" src="{% static 'scripts/demo.js' %}"></script-->
+  <script>
+    $('#autocomplete').autocomplete({
+      serviceUrl: 'http://localhost:8000/films/api/film/',
+      datatype: 'json',
+      paramName: 'search',
+      transformResult: function(response) {
+          return {
+              suggestions: $.map(JSON.parse(response), function(dataItem) {
+                  return { value: dataItem.title, data: dataItem.id, url: dataItem.url};
+              })
+          };
+      },
+      onSelect: function (suggestion) {
+          window.location.href = suggestion.url;
+      }
+  });
+  </script>
+
+  {% block script_block %}{% endblock %}
 
 </body>
 

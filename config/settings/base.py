@@ -75,6 +75,7 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "rest_framework",
+    "django_filters",
 ]
 
 LOCAL_APPS = [
@@ -272,3 +273,30 @@ SOCIALACCOUNT_ADAPTER = "star_wars.users.adapters.SocialAccountAdapter"
 TEMPLATE_CONTEXT_PROCESSORS = [
     'django.core.context_processors.request',
 ]
+
+REST_FRAMEWORK = {
+    # ~ 'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
+    ),
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter"
+    ),
+    'PAGE_SIZE': 10,
+    "COERCE_DECIMAL_TO_STRING": False,
+    "DATE_FORMAT": "%d/%m/%Y",
+    "DATE_INPUT_FORMATS": ["%d/%m/%Y", "%d-%m-%Y"],
+    "DATETIME_INPUT_FORMATS": [
+        'iso-8601',
+        '%d-%m-%Y',
+        '%d-%m-%Y %H:%M:%S',
+        '%d-%m-%Y %H:%M:%S.%f',
+        '%d-%m-%Y %H:%M',
+        '%d/%m/%Y',
+        '%d/%m/%Y %H:%M:%S',
+        '%d/%m/%Y %H:%M:%S.%f',
+        '%d/%m/%Y %H:%M',
+    ]
+}
