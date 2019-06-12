@@ -83,6 +83,7 @@ LOCAL_APPS = [
     "star_wars.users.apps.UsersConfig",
     "star_wars.characters.apps.CharactersApp",
     "star_wars.films.apps.FilmsApp",
+    "star_wars.url_history.apps.URLHistoryApp",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -138,6 +139,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "star_wars.url_history.middleware.URLHistoryMiddleware",
 ]
 
 # STATIC
@@ -300,3 +302,5 @@ REST_FRAMEWORK = {
         '%d/%m/%Y %H:%M',
     ]
 }
+
+AVOID_HISTORY_URLS = ['films:film-list']

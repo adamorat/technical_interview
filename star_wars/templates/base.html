@@ -10,7 +10,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Dashboard</title>
+  <title>Star Wars - Info</title>
 
   <!-- Custom fonts for this template-->
   <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
@@ -18,6 +18,7 @@
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+  <link href="{% static 'content/styles.css' %}" rel="stylesheet" />
   {% block static_block %}{% endblock %}
 
 </head>
@@ -74,7 +75,7 @@
           </button>
 
           <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+          <form class="d-none d-sm-inline-block form-inline mr-auto mb-sm-4 mb-md-4 mb-lg-4 mb-xl-4 ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
               <input type="text" class="form-control bg-light border-0 small"
                      placeholder="{% trans 'Buscar peliculas' %}" aria-label="Search"
@@ -172,13 +173,15 @@
   <script type="text/javascript" src="{% static 'scripts/jquery-1.8.2.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'scripts/jquery.mockjax.js' %}"></script>
   <script type="text/javascript" src="{% static 'src/jquery.autocomplete.js' %}"></script>
-  <!-- script type="text/javascript" src="{% static 'scripts/countries.js' %}"></script>
-  <script type="text/javascript" src="{% static 'scripts/demo.js' %}"></script-->
   <script>
     $('#autocomplete').autocomplete({
-      serviceUrl: 'http://localhost:8000/films/api/film/',
+      serviceUrl: '{% url "films:film-list" %}',
       datatype: 'json',
       paramName: 'search',
+      // beforeRender
+      // formatRsult
+      showNoSuggestionNotice: true,
+      noSuggestionNotice: "{% trans 'Sin resultados' %}",
       transformResult: function(response) {
           return {
               suggestions: $.map(JSON.parse(response), function(dataItem) {

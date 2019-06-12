@@ -1,16 +1,13 @@
-import itertools
+# -*- coding: utf-8 -*-
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, FormView, ListView
-from django_filters.views import FilterView
+from django.views.generic import TemplateView, ListView
+
 from rest_framework import mixins
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.serializers import Serializer
 from rest_framework.viewsets import GenericViewSet
-from swapi import swapi
 
 from star_wars.characters.models import Character
-from star_wars.films.forms import SearchFilmForm
 from star_wars.films.models import Film
 from star_wars.films.serializers import FilmSerializer
 
