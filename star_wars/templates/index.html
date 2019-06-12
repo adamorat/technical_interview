@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static i18n %}
 
+{% block films %}active{% endblock %}
+
 {% block content %}
 <div class="row">
   <!-- Area Chart -->
@@ -21,8 +23,10 @@
             <div class="carousel-inner">
               {% for character in characters %}
               <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
-                <img class="d-block w-100" src="" alt="{{character.name}}">
-                <div class="carousel-caption d-none d-md-block">
+                <img class="d-block w-100" src="{{character.random_image.url}}" alt="{{character.name}}"
+                     style="height: 23vw; object-fit: cover;">
+                <div class="carousel-caption d-none d-md-block"
+                     style="font-family: 'Star Wars'; text-shadow: 4px 4px 4px #aaa; color: yellow;">
                   <h5>{{character.name}}</h5>
                   <p>{{character.description}}</p>
                 </div>

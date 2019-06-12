@@ -1,4 +1,4 @@
-from django.db.models import CharField, IntegerField, TextField, DateField, ManyToManyField
+from django.db.models import CharField, IntegerField, TextField, DateField, ManyToManyField, ImageField
 from django.utils.translation import ugettext_lazy as _
 from model_utils.models import TimeStampedModel
 
@@ -14,6 +14,7 @@ class Film(TimeStampedModel):
     release_date = DateField()
     characters = ManyToManyField(Character)
     url = TextField()
+    image = ImageField(default='films/default/default.jpg', upload_to='films/uploaded')
 
     class Meta:
         verbose_name = _("Película")
