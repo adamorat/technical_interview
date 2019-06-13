@@ -2,8 +2,7 @@
 
 from random import randint
 
-from django.db import models
-from django.db.models import CharField, TextField, ForeignKey, ImageField, Count
+from django.db.models import CharField, TextField, ImageField, ManyToManyField
 from django.utils.translation import ugettext_lazy as _
 from model_utils.models import TimeStampedModel
 
@@ -27,6 +26,7 @@ class Character(TimeStampedModel):
     skin_color = CharField(max_length=255)
     homeworld = CharField(max_length=255)
     url = TextField()
+    character_image = ManyToManyField('CharacterImage', blank=True)
 
     class Meta:
         verbose_name = _("Personaje")
@@ -34,10 +34,13 @@ class Character(TimeStampedModel):
 
     @property
     def random_image(self):
-        queryset = self.characterimage_set.all()
+        queryset = self.character_image.all()
         count = queryset.count()
         random_index = randint(0, (count or 1) - 1)
-        return queryset[random_index].image
+        try:
+            return queryset[random_index].image
+        except IndexError:
+            return None
 
     @property
     def description(self):
@@ -50,9 +53,8 @@ class Character(TimeStampedModel):
 
 
 class CharacterImage(TimeStampedModel):
-    character = ForeignKey(Character, on_delete=models.CASCADE)
     image = ImageField(upload_to='characters/uploaded', default='characters/default/default.jpg')
 
     class Meta:
-        verbose_name = _("Personaje")
-        verbose_name_plural = _("Personajes")
+        verbose_name = _("Image de Personaje")
+        verbose_name_plural = _("Image de Personajes")

@@ -16,7 +16,8 @@ class FilmView(LoginRequiredMixin, TemplateView):
     template_name = "index.html"
 
     def get(self, request, *args, **kwargs):
-        kwargs.update({'characters': Character.objects.all()})
+        queryset = Character.objects.all().order_by('?')
+        kwargs.update({'characters': queryset[:5]})
         return super().get(request, *args, **kwargs)
 
 
