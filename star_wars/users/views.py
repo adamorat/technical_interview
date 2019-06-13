@@ -31,10 +31,14 @@ class LoginUserView(NoLoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         form_valid = super().form_valid(form)
-        user = authenticate(request=self.request,
-                            username=form.data.get('username'),
-                            password=form.data.get('password'))
-        login(self.request, user)
+        try:
+            user = authenticate(request=self.request,
+                                username=form.data.get('username'),
+                                password=form.data.get('password'))
+            login(self.request, user)
+        except:
+            form._errors = 'Credenciales de autenticación erroneos'
+            return super().form_invalid(form)
         return form_valid
 
 

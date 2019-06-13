@@ -1,10 +1,16 @@
-from django.contrib.auth import get_user_model, forms
+# -*- coding: utf-8 -*-
+
+import logging
+
+from django.contrib.auth import  forms, authenticate, login
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm, Form, CharField, PasswordInput
+from django.forms import Form, CharField, PasswordInput
 from django.utils.translation import ugettext_lazy as _
 
 from star_wars.users.models import User
 
+
+log = logging.getLogger(__file__)
 
 class UserChangeForm(forms.UserChangeForm):
     class Meta(forms.UserChangeForm.Meta):
