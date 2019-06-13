@@ -67,5 +67,9 @@ seleccionables por el usuario.
 En la esquina superior derecha tendrá un desplegable desde el cual podrá escoger la opción de "Logout" (cerrar sesión)
 
 
+Información adicional
+---------------------
 
-
+Debido a la inestabilidad del servicio ofrecido por https://swapi.co/ se ha optado por hacer una importación de datos
+referentes a Personajes y Peliculas mediante Data Migrations. Estas se encuentran en
+"characters/migrations/0001_initial.py" y "films/migrations/0001_initial.py" respectivamente.
