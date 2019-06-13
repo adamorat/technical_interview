@@ -1,14 +1,10 @@
 from django.urls import path
 
-from star_wars.users.views import (
-    user_redirect_view,
-    user_update_view,
-    user_detail_view,
-)
+from star_wars.users.views import RegisterUserView, LoginUserView, LogOutView
 
 app_name = "users"
 urlpatterns = [
-    path("~redirect/", view=user_redirect_view, name="redirect"),
-    path("~update/", view=user_update_view, name="update"),
-    path("<str:username>/", view=user_detail_view, name="detail"),
+    path("register/", view=RegisterUserView.as_view(), name='register'),
+    path("login/", view=LoginUserView.as_view(), name='login'),
+    path("logout/", view=LogOutView.as_view(), name='logout')
 ]

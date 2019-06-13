@@ -1,42 +1,46 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
-from django.views.generic import DetailView, RedirectView, UpdateView
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
+from django.urls import reverse_lazy, reverse
+from django.views import View
+from django.views.generic import CreateView, FormView
 
-User = get_user_model()
-
-
-class UserDetailView(LoginRequiredMixin, DetailView):
-
-    model = User
-    slug_field = "username"
-    slug_url_kwarg = "username"
+from star_wars.users.forms import UserCreationForm, UserLoginForm
+from star_wars.users.mixins import NoLoginRequiredMixin
 
 
-user_detail_view = UserDetailView.as_view()
+class RegisterUserView(NoLoginRequiredMixin, CreateView):
+    form_class = UserCreationForm
+    template_name = 'register.html'
+    success_url = reverse_lazy('films:index', args=())
+
+    def form_valid(self, form):
+        form_valid = super().form_valid(form)
+        authenticate(request=self.request,
+                     username=form.instance.username,
+                     password=form.data.get('password'))
+        login(self.request, form.instance)
+        return form_valid
 
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+class LoginUserView(NoLoginRequiredMixin, FormView):
+    form_class = UserLoginForm
+    template_name = 'login.html'
+    success_url = reverse_lazy('films:index', args=())
 
-    model = User
-    fields = ["name"]
-
-    def get_success_url(self):
-        return reverse("users:detail", kwargs={"username": self.request.user.username})
-
-    def get_object(self):
-        return User.objects.get(username=self.request.user.username)
-
-
-user_update_view = UserUpdateView.as_view()
-
-
-class UserRedirectView(LoginRequiredMixin, RedirectView):
-
-    permanent = False
-
-    def get_redirect_url(self):
-        return reverse("users:detail", kwargs={"username": self.request.user.username})
+    def form_valid(self, form):
+        form_valid = super().form_valid(form)
+        user = authenticate(request=self.request,
+                            username=form.data.get('username'),
+                            password=form.data.get('password'))
+        login(self.request, user)
+        return form_valid
 
 
-user_redirect_view = UserRedirectView.as_view()
+class LogOutView(LoginRequiredMixin, View):
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return HttpResponseRedirect(reverse('users:login', args=()))

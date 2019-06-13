@@ -43,7 +43,10 @@ LOCALE_PATHS = [ROOT_DIR.path("locale")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres://localhost/star_wars")
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'star_wars_db',
+    }
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
@@ -72,11 +75,15 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "rest_framework",
+    "django_filters",
 ]
 
 LOCAL_APPS = [
-    "star_wars.users.apps.UsersConfig",
     # Your stuff: custom apps go here
+    "star_wars.users.apps.UsersConfig",
+    "star_wars.characters.apps.CharactersApp",
+    "star_wars.films.apps.FilmsApp",
+    "star_wars.url_history.apps.URLHistoryApp",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -91,14 +98,14 @@ MIGRATION_MODULES = {"sites": "star_wars.contrib.sites.migrations"}
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
+    # "allauth.account.auth_backends.AuthenticationBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
 LOGIN_REDIRECT_URL = "users:redirect"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
-LOGIN_URL = "account_login"
+LOGIN_URL = "users:login"
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
@@ -132,6 +139,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "star_wars.url_history.middleware.URLHistoryMiddleware",
 ]
 
 # STATIC
@@ -264,3 +272,35 @@ SOCIALACCOUNT_ADAPTER = "star_wars.users.adapters.SocialAccountAdapter"
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+TEMPLATE_CONTEXT_PROCESSORS = [
+    'django.core.context_processors.request',
+]
+
+REST_FRAMEWORK = {
+    # ~ 'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
+    ),
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter"
+    ),
+    'PAGE_SIZE': 10,
+    "COERCE_DECIMAL_TO_STRING": False,
+    "DATE_FORMAT": "%d/%m/%Y",
+    "DATE_INPUT_FORMATS": ["%d/%m/%Y", "%d-%m-%Y"],
+    "DATETIME_INPUT_FORMATS": [
+        'iso-8601',
+        '%d-%m-%Y',
+        '%d-%m-%Y %H:%M:%S',
+        '%d-%m-%Y %H:%M:%S.%f',
+        '%d-%m-%Y %H:%M',
+        '%d/%m/%Y',
+        '%d/%m/%Y %H:%M:%S',
+        '%d/%m/%Y %H:%M:%S.%f',
+        '%d/%m/%Y %H:%M',
+    ]
+}
+
+AVOID_HISTORY_URLS = ['films:film-list']
