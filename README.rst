@@ -31,7 +31,7 @@ Importante seguir los siguientes pasos.
 
     $ cd star_wars
 
-    $ linux_venv/bin/activate
+    $ source linux_venv/bin/activate
 
     $ python star_wars/manage.py runserver
 
