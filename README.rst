@@ -1,7 +1,7 @@
 star_wars
 =========
 
-Information about Star Wars
+Entrevista técnica: Información sobre Star Wars
 
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
      :target: https://github.com/pydanny/cookiecutter-django/
@@ -11,67 +11,60 @@ Information about Star Wars
      :alt: Black code style
 
 
-Settings
---------
+Como arrancar el servicio
+-------------------------
 
-Moved to settings_.
+En primer lugar debemos acceder a la ruta en la que se encuentra el proyecto clonado o descomprimido mediante terminal.
+Tras esto ejecutamos las siguientes lineas.
 
-.. _settings: http://cookiecutter-django.readthedocs.io/en/latest/settings.html
+Importante seguir los siguientes pasos.
 
-Basic Commands
---------------
+* Desde windows:
 
-Setting Up Your Users
-^^^^^^^^^^^^^^^^^^^^^
+    $ cd star_wars
 
-* To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+    $ venv\\Scripts\\activate
 
-* To create an **superuser account**, use this command::
+    $ python manage.py runserver
 
-    $ python manage.py createsuperuser
+* Desde linux:
 
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
+    $ cd star_wars
 
-Type checks
-^^^^^^^^^^^
+    $ linux_venv/bin/activate
 
-Running type checks with mypy:
+    $ python star_wars/manage.py runserver
 
-::
-
-  $ mypy star_wars
-
-Test coverage
-^^^^^^^^^^^^^
-
-To run the tests, check your test coverage, and generate an HTML coverage report::
-
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
-
-Running tests with py.test
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-::
-
-  $ pytest
-
-Live reloading and Sass CSS compilation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Moved to `Live reloading and SASS compilation`_.
-
-.. _`Live reloading and SASS compilation`: http://cookiecutter-django.readthedocs.io/en/latest/live-reloading-and-sass-compilation.html
+Hecho esto, nos dirigimos al navegador (Google Chrome) e introducimos la siguiente URL: http://localhost:8000/
 
 
+Uso de la plataforma
+--------------------
 
+El aplicativo está basado íntegramente en las instrucciones aportadas.
 
+Para realizar las pruebas se ha creado un usuario admin en caso de que fuera necesario:
 
-Deployment
-----------
+* username: admin
 
-The following details how to deploy this application.
+* password: string1234
+
+En primer lugar, tenemos la pagina de "login" donde se podrá acceder con un usuario ya creado o pulsar sobre
+"Crear una cuenta"
+
+Una vez dentro, podremos visualizar el carrusel de personajes y el buscador de películas en la barra superior.
+
+En el menú lateral izquierdo tenemos dos opciones:
+
+* Buscador de Películas: Sería la página actual.
+
+* Historial de Páginas Visitadas: Histórico con las url visitadas, fecha y hora de la visita.
+
+Por último, para ver información sobre una película solo tenemos que comenzar una búsqueda en el formulario de la barra
+superior (accesible desde cualquier vista). Una vez se empiezan a introducir caracteres, se mostrarán las sugerencias
+seleccionables por el usuario.
+
+En la esquina superior derecha tendrá un desplegable desde el cual podrá escoger la opción de "Logout" (cerrar sesión)
 
 
 
