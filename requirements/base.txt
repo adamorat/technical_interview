@@ -12,7 +12,7 @@ django-model-utils==3.1.2  # https://github.com/jazzband/django-model-utils
 django-allauth==0.39.1  # https://github.com/pennersr/django-allauth
 django-crispy-forms==1.7.2  # https://github.com/django-crispy-forms/django-crispy-forms
 django-redis==4.10.0  # https://github.com/niwinz/django-redis
-django-debug-toolbar==1.11
+django-debug-toolbar==1.11.1
 django-extensions==2.1.7
 # psycopg2==2.8.2
 ipdb==0.12
